@@ -127,6 +127,22 @@ const mapData = [
 
 const canvas = document.getElementById("can");
 const context = canvas.getContext("2d");
+const blockWidth = canvas.width / 29;
+const blockHeight = canvas.height / 31;
+const pacman = new Pacman(14, 19);
+let points = 0;
+
+window.addEventListener("keydown", (event) => {
+    if (event.code === "ArrowRight") {
+        pacman.direction = Direction.RIGHT;
+    } else if (event.code === "ArrowLeft") {
+        pacman.direction = Direction.LEFT;
+    } else if (event.code === "ArrowUp") {
+        pacman.direction = Direction.UP;
+    } else if (event.code === "ArrowDown") {
+        pacman.direction = Direction.DOWN;
+    }
+});
 
 function drawBlock(cellX, cellY, blockWidth, blockHeight) {
     context.fillStyle = "blue";
@@ -154,10 +170,7 @@ function drawBall(cellX, cellY, blockWidth, ballType) {
     context.fill();
 }
 
-function createMap() {
-    const blockWidth = canvas.width / 29;
-    const blockHeight = canvas.height / 31;
-
+function drawMap() {
     let cellX = 0;
     let cellY = 0;
 
@@ -175,17 +188,27 @@ function createMap() {
     });
 }
 
-function init() {
-    // console.log("context: ", context);
-    // console.log("mapData: ", mapData);
-
-    createMap();
-
-    const pacman = new Pacman(14, 19);
-
-    const blockWidth = canvas.width / 29;
-    const blockHeight = canvas.height / 31;
-    drawBall(pacman.x * blockWidth, pacman.y * blockHeight, blockWidth, 4);
+function clearCanvas() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.beginPath();
 }
 
-init();
+function updateMap() {
+    mapData[pacman.y][pacman.x] = 0;
+    points++;
+}
+
+function drawGame() {
+    clearCanvas();
+    pacman.move(mapData);
+    const foundPoint = pacman.checkPoint(mapData);
+    if (foundPoint) {
+        updateMap();
+    }
+    drawMap();
+    drawBall(pacman.x * blockWidth, pacman.y * blockHeight, blockWidth, 4);
+
+    requestAnimationFrame(drawGame);
+}
+
+drawGame();
