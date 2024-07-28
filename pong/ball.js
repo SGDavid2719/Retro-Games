@@ -13,9 +13,9 @@ class Ball {
 		this.#radius = 10;
 	}
 
-	reset(canvas) {
-		this.#x = canvas.width / 2;
-		this.#y = canvas.height / 2;
+	reset(newX, newY) {
+		this.#x = newX;
+		this.#y = newY;
 		this.#xSpeed = -this.#xSpeed;
 		this.#ySpeed = 0;
 	}

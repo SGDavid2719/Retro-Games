@@ -66,10 +66,10 @@ function update() {
 	// Reset ball if it goes out of bounds and update scores
 	if (ball.x - ball.radius < 0) {
 		ai.score++;
-		ball.reset(canvas);
+		ball.reset(canvas.width / 2, canvas.height / 2);
 	} else if (ball.x + ball.radius > canvas.width) {
 		person.score++;
-		ball.reset(canvas);
+		ball.reset(canvas.width / 2, canvas.height / 2);
 	}
 
 	// Simple AI to follow the ball
