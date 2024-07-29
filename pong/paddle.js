@@ -1,25 +1,15 @@
 class Paddle {
-	#width;
-	#height;
+	#shape;
 
 	constructor() {
-		this.#width = 10;
-		this.#height = 100;
+		this.#shape = { width: 10, height: 100 };
 	}
 
-	get width() {
-		return this.#width;
+	get shape() {
+		return this.#shape;
 	}
 
-	set width(value) {
-		this.#width = value;
-	}
-
-	get height() {
-		return this.#height;
-	}
-
-	set height(value) {
-		this.#height = value;
+	set shape(value) {
+		this.#shape = value;
 	}
 }

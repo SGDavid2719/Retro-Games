@@ -3,15 +3,13 @@ class Piece {
 	#color;
 	#tetrominoPatternNumber;
 	#tetrominoPattern;
-	#x;
-	#y;
+	#position;
 
 	constructor() {
 		const randomNumber = Math.floor(Math.random() * TETRIMINOES.length);
 		const tetrominoNumber = randomNumber === 0 ? 1 : randomNumber;
 
-		this.#x = 3;
-		this.#y = -2;
+		this.#position = { x: 3, y: -2 };
 		this.#tetromino = TETRIMINOES[tetrominoNumber][0];
 		this.#color = TETRIMINOES[tetrominoNumber][1];
 		this.#tetrominoPatternNumber = 0;
@@ -22,7 +20,7 @@ class Piece {
 		for (let row = 0; row < this.#tetrominoPattern.length; row++) {
 			for (let column = 0; column < this.#tetrominoPattern.length; column++) {
 				if (this.#tetrominoPattern[row][column]) {
-					drawSquare(this.#x + column, this.#y + row, color);
+					drawSquare(this.#position.x + column, this.#position.y + row, color);
 				}
 			}
 		}
@@ -41,7 +39,7 @@ class Piece {
 		let numberOfFullRows = 0;
 		if (!this.collision(0, 1, this.#tetrominoPattern, COL, ROW)) {
 			this.unDraw(drawSquare);
-			this.#y++;
+			this.#position.y++;
 			this.draw(drawSquare);
 		} else {
 			numberOfFullRows = this.lock(COL, ROW);
@@ -53,7 +51,7 @@ class Piece {
 	moveRight(COL, ROW, drawSquare) {
 		if (!this.collision(1, 0, this.#tetrominoPattern, COL, ROW)) {
 			this.unDraw(drawSquare);
-			this.#x++;
+			this.#position.x++;
 			this.draw(drawSquare);
 		}
 	}
@@ -61,7 +59,7 @@ class Piece {
 	moveLeft(COL, ROW, drawSquare) {
 		if (!this.collision(-1, 0, this.#tetrominoPattern, COL, ROW)) {
 			this.unDraw(drawSquare);
-			this.#x--;
+			this.#position.x--;
 			this.draw(drawSquare);
 		}
 	}
@@ -74,7 +72,7 @@ class Piece {
 		let kick = 0;
 
 		if (this.collision(0, 0, nextPattern, COL, ROW)) {
-			if (this.#x > COL / 2) {
+			if (this.#position.x > COL / 2) {
 				kick = -1;
 			} else {
 				kick = 1;
@@ -98,8 +96,8 @@ class Piece {
 					continue;
 				}
 
-				let newX = this.#x + column + x;
-				let newY = this.#y + row + y;
+				let newX = this.#position.x + column + x;
+				let newY = this.#position.y + row + y;
 
 				if (newX < 0 || newX >= COL || newY >= ROW) {
 					return true;
@@ -121,10 +119,10 @@ class Piece {
 				if (!this.#tetrominoPattern[row][column]) {
 					continue;
 				}
-				if (this.#y + row < 0) {
+				if (this.#position.y + row < 0) {
 					break;
 				}
-				board[this.#y + row][this.#x + column] = this.#color;
+				board[this.#position.y + row][this.#position.x + column] = this.#color;
 			}
 		}
 		let numberOfFullRows = 0;
@@ -148,20 +146,12 @@ class Piece {
 		return numberOfFullRows;
 	}
 
-	get x() {
-		return this.#x;
+	get position() {
+		return this.#position;
 	}
 
-	set x(value) {
-		this.#x = value;
-	}
-
-	get y() {
-		return this.#y;
-	}
-
-	set y(value) {
-		this.#y = value;
+	set position(value) {
+		this.#position = value;
 	}
 
 	get tetromino() {

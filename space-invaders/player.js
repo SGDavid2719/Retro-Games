@@ -1,57 +1,38 @@
 class Player {
-	#width;
-	#height;
+	#position;
+	#shape;
 	#speed;
-	#x;
-	#y;
 	#color;
 
 	constructor(x, y, width, height, speed) {
-		this.#x = (x - width) / 2;
-		(this.#y = y - height), (this.#width = width - 10);
-		this.#height = (height - 100) / 2;
+		this.#position = { x: (x - width) / 2, y: y - height };
+		this.#shape = { width: width - 10, height: (height - 100) / 2 };
 		this.#speed = speed;
 		this.#color = "#555";
 	}
 
 	move(rightPressed, leftPressed, canvasWidth) {
-		if (rightPressed && this.#x < canvasWidth - this.#width) {
-			this.#x += this.#speed;
-		} else if (leftPressed && this.#x > 0) {
-			this.#x -= this.#speed;
+		if (rightPressed && this.#position.x < canvasWidth - this.#shape.width) {
+			this.#position.x += this.#speed;
+		} else if (leftPressed && this.#position.x > 0) {
+			this.#position.x -= this.#speed;
 		}
 	}
 
-	get x() {
-		return this.#x;
+	get position() {
+		return this.#position;
 	}
 
-	set x(value) {
-		this.#x = value;
+	set position(value) {
+		this.#position = value;
 	}
 
-	get y() {
-		return this.#y;
+	get shape() {
+		return this.#shape;
 	}
 
-	set y(value) {
-		this.#y = value;
-	}
-
-	get width() {
-		return this.#width;
-	}
-
-	set width(value) {
-		this.#width = value;
-	}
-
-	get height() {
-		return this.#height;
-	}
-
-	set height(value) {
-		this.#height = value;
+	set shape(value) {
+		this.#shape = value;
 	}
 
 	get speed() {

@@ -1,17 +1,13 @@
 class Enemy {
-	#width;
-	#height;
+	#position;
+	#shape;
 	#speed;
-	#x;
-	#y;
 	#alive;
 	#color;
 
 	constructor(x, y, width, height, speed) {
-		this.#x = x;
-		this.#y = y;
-		this.#width = width;
-		this.#height = height;
+		this.#position = { x: x, y: y };
+		this.#shape = { width: width, height: height };
 		this.#speed = speed;
 		this.#alive = 1;
 		this.#color = "#0f0";
@@ -19,8 +15,11 @@ class Enemy {
 
 	moveX(canvasWidth) {
 		let hitEdge = false;
-		this.#x += this.#speed;
-		if (this.#x + this.#width > canvasWidth || this.#x < 0) {
+		this.#position.x += this.#speed;
+		if (
+			this.#position.x + this.#shape.width > canvasWidth ||
+			this.#position.x < 0
+		) {
 			hitEdge = true;
 		}
 		return hitEdge;
@@ -28,39 +27,23 @@ class Enemy {
 
 	moveY() {
 		this.#speed = -this.#speed;
-		this.#y += this.#height / 2;
+		this.#position.y += this.#shape.height / 2;
 	}
 
-	get x() {
-		return this.#x;
+	get position() {
+		return this.#position;
 	}
 
-	set x(value) {
-		this.#x = value;
+	set position(value) {
+		this.#position = value;
 	}
 
-	get y() {
-		return this.#y;
+	get shape() {
+		return this.#shape;
 	}
 
-	set y(value) {
-		this.#y = value;
-	}
-
-	get width() {
-		return this.#width;
-	}
-
-	set width(value) {
-		this.#width = value;
-	}
-
-	get height() {
-		return this.#height;
-	}
-
-	set height(value) {
-		this.#height = value;
+	set shape(value) {
+		this.#shape = value;
 	}
 
 	get speed() {

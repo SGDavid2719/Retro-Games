@@ -6,14 +6,14 @@ canvas.height = 400;
 
 const ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 0);
 const paddle = new Paddle();
-const person = new Player(0, (canvas.height - paddle.height) / 2);
+const person = new Player(0, (canvas.height - paddle.shape.height) / 2);
 const ai = new Player(
-	canvas.width - paddle.width,
-	(canvas.height - paddle.height) / 2
+	canvas.width - paddle.shape.width,
+	(canvas.height - paddle.shape.height) / 2
 );
 
 document.addEventListener("keydown", (event) =>
-	person.move(event.key, canvas.height, paddle.height)
+	person.move(event.key, canvas.height, paddle.shape.height)
 );
 
 function drawRect(x, y, w, h, color) {
@@ -38,15 +38,21 @@ function drawNet() {
 function draw() {
 	drawRect(0, 0, canvas.width, canvas.height, "#000");
 	drawNet();
-	drawRect(0, person.y, paddle.width, paddle.height, "#fff");
 	drawRect(
-		canvas.width - paddle.width,
-		ai.y,
-		paddle.width,
-		paddle.height,
+		0,
+		person.position.y,
+		paddle.shape.width,
+		paddle.shape.height,
 		"#fff"
 	);
-	drawCircle(ball.x, ball.y, ball.radius, "#fff");
+	drawRect(
+		canvas.width - paddle.shape.width,
+		ai.position.y,
+		paddle.shape.width,
+		paddle.shape.height,
+		"#fff"
+	);
+	drawCircle(ball.position.x, ball.position.y, ball.radius, "#fff");
 	drawScores();
 }
 
@@ -64,19 +70,19 @@ function update() {
 	ball.checkCollision(canvas, paddle, person, ai);
 
 	// Reset ball if it goes out of bounds and update scores
-	if (ball.x - ball.radius < 0) {
+	if (ball.position.x - ball.radius < 0) {
 		ai.score++;
 		ball.reset(canvas.width / 2, canvas.height / 2);
-	} else if (ball.x + ball.radius > canvas.width) {
+	} else if (ball.position.x + ball.radius > canvas.width) {
 		person.score++;
 		ball.reset(canvas.width / 2, canvas.height / 2);
 	}
 
 	// Simple AI to follow the ball
-	if (ball.y > ai.y + paddle.height / 2) {
-		ai.y += 2;
+	if (ball.position.y > ai.position.y + paddle.shape.height / 2) {
+		ai.position.y += 2;
 	} else {
-		ai.y -= 2;
+		ai.position.y -= 2;
 	}
 
 	draw();

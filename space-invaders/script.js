@@ -12,20 +12,21 @@ const enemies = [];
 const projectiles = [];
 let score = 0;
 let gameOver = false;
-
-let rightPressed = false;
-let leftPressed = false;
-let spacePressed = false;
+const controls = {
+	rightPressed: false,
+	leftPressed: false,
+	spacePressed: false,
+};
 
 document.addEventListener(
 	"keydown",
 	(event) => {
 		if (event.key == "Right" || event.key == "ArrowRight") {
-			rightPressed = true;
+			controls.rightPressed = true;
 		} else if (event.key == "Left" || event.key == "ArrowLeft") {
-			leftPressed = true;
+			controls.leftPressed = true;
 		} else if (event.key == " " || event.key == "Spacebar") {
-			spacePressed = true;
+			controls.spacePressed = true;
 		}
 	},
 	false
@@ -35,11 +36,11 @@ document.addEventListener(
 	"keyup",
 	(event) => {
 		if (event.key == "Right" || event.key == "ArrowRight") {
-			rightPressed = false;
+			controls.rightPressed = false;
 		} else if (event.key == "Left" || event.key == "ArrowLeft") {
-			leftPressed = false;
+			controls.leftPressed = false;
 		} else if (event.key == " " || event.key == "Spacebar") {
-			spacePressed = false;
+			controls.spacePressed = false;
 		}
 	},
 	false
@@ -63,30 +64,33 @@ document.addEventListener(
 })();
 
 function createProjectiles() {
-	if (spacePressed) {
+	if (controls.spacePressed) {
 		const width = 5;
 		const height = 10;
 
 		projectiles.push(
 			new Projectile(
-				player.x + player.width / 2 - width / 2,
-				player.y + player.height - height,
+				player.position.x + player.shape.width / 2 - width / 2,
+				player.position.y + player.shape.height - height,
 				width,
 				height,
 				7
 			)
 		);
 
-		spacePressed = false;
+		controls.spacePressed = false;
 	}
 }
 
 function drawPlayer() {
 	ctx.beginPath();
-	ctx.moveTo(player.x + player.width / 2, player.y + +player.height);
+	ctx.moveTo(
+		player.position.x + player.shape.width / 2,
+		player.position.y + +player.shape.height
+	);
 	ctx.fillStyle = player.color;
-	ctx.lineTo(player.x, player.y);
-	ctx.lineTo(player.x + player.width, player.y);
+	ctx.lineTo(player.position.x, player.position.y);
+	ctx.lineTo(player.position.x + player.shape.width, player.position.y);
 	ctx.fill();
 	ctx.closePath();
 }
@@ -98,10 +102,10 @@ function drawProjectiles() {
 	for (let index = 0; index < projectiles.length; index++) {
 		const projectile = projectiles[index];
 		ctx.fillRect(
-			projectile.x,
-			projectile.y,
-			projectile.width,
-			projectile.height
+			projectile.position.x,
+			projectile.position.y,
+			projectile.shape.width,
+			projectile.shape.height
 		);
 	}
 }
@@ -112,7 +116,12 @@ function drawEnemies() {
 			if (enemies[column][row].alive == 1) {
 				const enemy = enemies[column][row];
 				ctx.beginPath();
-				ctx.rect(enemy.x, enemy.y, enemy.width, enemy.height);
+				ctx.rect(
+					enemy.position.x,
+					enemy.position.y,
+					enemy.shape.width,
+					enemy.shape.height
+				);
 				ctx.fillStyle = enemy.color;
 				ctx.fill();
 				ctx.closePath();
@@ -128,7 +137,7 @@ function drawScore() {
 function moveProjectiles() {
 	for (let index = 0; index < projectiles.length; index++) {
 		projectiles[index].move();
-		if (projectiles[index].y < 0) {
+		if (projectiles[index].position.y < 0) {
 			projectiles.splice(index, 1);
 			index--;
 		}
@@ -164,10 +173,10 @@ function collisionDetection() {
 				const enemy = enemies[column][row];
 				if (enemy.alive == 1) {
 					if (
-						projectile.x > enemy.x &&
-						projectile.x < enemy.x + enemy.width &&
-						projectile.y > enemy.y &&
-						projectile.y < enemy.y + enemy.height
+						projectile.position.x > enemy.position.x &&
+						projectile.position.x < enemy.position.x + enemy.shape.width &&
+						projectile.position.y > enemy.position.y &&
+						projectile.position.y < enemy.position.y + enemy.shape.height
 					) {
 						enemy.alive = 0;
 						projectiles.splice(index, 1);
@@ -189,7 +198,8 @@ function collisionDetection() {
 			const enemy = enemies[column][row];
 			if (
 				enemy.alive === 1 &&
-				enemy.y + enemy.height >= canvas.height - player.height
+				enemy.position.y + enemy.shape.height >=
+					canvas.height - player.shape.height
 			) {
 				gameOver = true;
 				return;
@@ -199,7 +209,7 @@ function collisionDetection() {
 }
 
 function update() {
-	player.move(rightPressed, leftPressed, canvas.width);
+	player.move(controls.rightPressed, controls.leftPressed, canvas.width);
 	createProjectiles();
 	moveProjectiles();
 	moveEnemies();

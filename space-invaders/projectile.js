@@ -1,54 +1,34 @@
 class Projectile {
-	#width;
-	#height;
+	#position;
+	#shape;
 	#speed;
-	#x;
-	#y;
 	#color;
 
 	constructor(x, y, width, height, speed) {
-		this.#x = x;
-		this.#y = y;
-		this.#width = width;
-		this.#height = height;
+		this.#position = { x: x, y: y };
+		this.#shape = { width: width, height: height };
 		this.#speed = speed;
 		this.#color = "#f00";
 	}
 
 	move() {
-		this.#y -= this.#speed;
+		this.#position.y -= this.#speed;
 	}
 
-	get x() {
-		return this.#x;
+	get position() {
+		return this.#position;
 	}
 
-	set x(value) {
-		this.#x = value;
+	set position(value) {
+		this.#position = value;
 	}
 
-	get y() {
-		return this.#y;
+	get shape() {
+		return this.#shape;
 	}
 
-	set y(value) {
-		this.#y = value;
-	}
-
-	get width() {
-		return this.#width;
-	}
-
-	set width(value) {
-		this.#width = value;
-	}
-
-	get height() {
-		return this.#height;
-	}
-
-	set height(value) {
-		this.#height = value;
+	set shape(value) {
+		this.#shape = value;
 	}
 
 	get speed() {
