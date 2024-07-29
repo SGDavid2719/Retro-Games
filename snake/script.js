@@ -38,12 +38,12 @@ window.addEventListener("keydown", (event) => {
 		if (snake.eat(fruit)) {
 			fruit.pickLocation(rows, columns, scale);
 			score++;
-			scoreElement.innerText = `Punctuation: ${score}`;
+			scoreElement.innerText = `Score: ${score}`;
 		}
 
 		if (snake.checkCollision()) {
 			score = 0;
-			scoreElement.innerText = `Punctuation: ${score}`;
+			scoreElement.innerText = `Score: ${score}`;
 		}
 	}, 250);
 })();
