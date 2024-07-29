@@ -149,8 +149,8 @@ function moveEnemies() {
 	for (let column = 0; column < enemyColumnCount; column++) {
 		for (let row = 0; row < enemyRowCount; row++) {
 			if (enemies[column][row].alive == 1) {
-				const enemyHittedEdge = enemies[column][row].moveX(canvas.width);
-				if (enemyHittedEdge) {
+				const enemyHitEdge = enemies[column][row].moveX(canvas.width);
+				if (enemyHitEdge) {
 					hitEdge = true;
 				}
 			}
