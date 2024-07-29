@@ -103,5 +103,6 @@ drawBoard();
 		requestAnimationFrame(game);
 	} else {
 		alert("Game Over");
+		document.location.reload();
 	}
 })();
